@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: players
+  name: players
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: players
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: players
+    spec:
+      containers:
+      - image: malikoo/players:1.0
+        name: players
+        resources: {}
+        env:
+        - name: POSTGRES_URL
+          value: playersdb:5432/testdb
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: players
+  name: players
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: players
+  type: ClusterIP
+status:
+  loadBalancer: {}

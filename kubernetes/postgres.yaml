@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: playersdb
+  name: playersdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: playersdb
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: playersdb
+    spec:
+      containers:
+      - image: postgres
+        name: postgres
+        resources: {}
+        env:
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: testdb 
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: playersdb
+  name: playersdb
+spec:
+  ports:
+  - name: 5432-5432
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: playersdb
+  type: ClusterIP
+status:
+  loadBalancer: {}
